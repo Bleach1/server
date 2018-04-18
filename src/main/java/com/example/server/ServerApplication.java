@@ -9,8 +9,10 @@ import org.springframework.context.annotation.ComponentScan;
 public class ServerApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(ServerApplication.class, args);
-        new Server().server();
+       // new Server().server();
+        new Server2().getServer();
     }
 
 }
