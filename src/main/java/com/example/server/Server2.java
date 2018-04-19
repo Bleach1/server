@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server2 {
     public Server2() {
@@ -13,6 +15,7 @@ public class Server2 {
 
     private ServerSocket serverSocket;
     private Socket socket;
+    private List<PrintWriter> printWriters = new ArrayList<>();
 
     /**
      * 获取连接
@@ -25,7 +28,6 @@ public class Server2 {
                 System.err.println("等待客户端连接......");
                 //从队列中取出Socket或等待连接
                 socket = serverSocket.accept();
-
                 if (socket.isConnected()) {
                     System.out.println("连接成功！");
                 }
@@ -51,23 +53,31 @@ public class Server2 {
             new Thread(this).start();
         }
 
+        @SuppressWarnings("ImplicitArrayToString")
         @Override
         public void run() {
             try {
-
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                printWriter = new PrintWriter(socket.getOutputStream());
+                printWriters.add(printWriter);
                 //处理客户端发来的数据
                 String clientMsg = null;
                 while ((clientMsg = bufferedReader.readLine()) != null) {
                     System.out.println("客户端发来的消息：" + clientMsg);
-                    //向客户端回复信息
-                    printWriter = new PrintWriter(socket.getOutputStream());
-                    printWriter.println(clientMsg + "ok");
-                    printWriter.flush();
-                    System.out.println("向客户端回复信息：" + clientMsg + "ok/n");
+                    System.out.println("printWriters：" + printWriters.size());
+                    if (!"".equals(clientMsg)) {
+                        //向客户端回复信息
+                        for (PrintWriter writer : printWriters) {
+                            writer.println(clientMsg);
+                            writer.flush();
+                            System.out.println("向客户端回复信息：" + clientMsg);
+                        }
+                    }
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                System.err.println("异常信息：" + e.getMessage());
             } finally {
                 if (socket != null) {
                     try {
