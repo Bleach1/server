@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -35,4 +36,18 @@ public class UserService {
         List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql);
         return maps;
     }
+
+
+    public void insertInfo(String name, Date time) {
+        jdbcTemplate.update("insert into info values (null ,?,?);", name, time);
+    }
+
+
+    public List<Map<String, Object>> getInfo() {
+        String sql = "select * from info ";
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql);
+        return maps;
+    }
+
+
 }

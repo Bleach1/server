@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.server.service.UserService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -51,4 +52,16 @@ public class UserController {
         }
     }
 
+
+    @RequestMapping("/getInfo")
+    public String getInfo() {
+        userService.getInfo();
+        return "success";
+    }
+
+    @RequestMapping("/insertInfo")
+    public String insertInfo(String name, Date time) {
+        userService.insertInfo(name, time);
+        return "success";
+    }
 }

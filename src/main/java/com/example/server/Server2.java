@@ -1,5 +1,8 @@
 package com.example.server;
 
+import com.example.server.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Server2 {
+
+    @Autowired
+    private UserService userService;
+
     public Server2() {
     }
 
@@ -65,6 +72,7 @@ public class Server2 {
                 while ((clientMsg = bufferedReader.readLine()) != null) {
                     System.out.println("客户端发来的消息：" + clientMsg);
                     System.out.println("printWriters：" + printWriters.size());
+
                     if (!"".equals(clientMsg)) {
                         //向客户端回复信息
                         for (PrintWriter writer : printWriters) {
