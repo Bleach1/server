@@ -55,13 +55,8 @@ public class UserController {
 
     @RequestMapping("/getInfo")
     public String getInfo() {
-        userService.getInfo();
-        return "success";
+        List<Map<String, Object>> info = userService.getInfo();
+        return info.toString();
     }
 
-    @RequestMapping("/insertInfo")
-    public String insertInfo(String name, Date time) {
-        userService.insertInfo(name, time);
-        return "success";
-    }
 }

@@ -1,7 +1,6 @@
 package com.example.server;
 
 import com.example.server.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,10 +13,12 @@ import java.util.List;
 
 public class Server2 {
 
-    @Autowired
-    private UserService userService;
+    private final UserService bean;
 
     public Server2() {
+        bean = SpringContextUtils.getBean(UserService.class);
+        //bean.insertInfo("1", "2", "3", "4");
+
     }
 
     private ServerSocket serverSocket;
@@ -68,10 +69,15 @@ public class Server2 {
                 printWriter = new PrintWriter(socket.getOutputStream());
                 printWriters.add(printWriter);
                 //处理客户端发来的数据
-                String clientMsg = null;
+                String clientMsg;
                 while ((clientMsg = bufferedReader.readLine()) != null) {
                     System.out.println("客户端发来的消息：" + clientMsg);
                     System.out.println("printWriters：" + printWriters.size());
+
+                    if (!"".equals(clientMsg) && clientMsg.length() > 1) {
+                        String[] split = clientMsg.split(",");
+                        bean.insertInfo(split[0], split[1], split[2], split[3]);
+                    }
 
                     if (!"".equals(clientMsg)) {
                         //向客户端回复信息

@@ -38,16 +38,13 @@ public class UserService {
     }
 
 
-    public void insertInfo(String name, Date time) {
-        jdbcTemplate.update("insert into info values (null ,?,?);", name, time);
-    }
-
-
     public List<Map<String, Object>> getInfo() {
         String sql = "select * from info ";
         List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql);
         return maps;
     }
 
-
+    public void insertInfo(String sunlight, String police, String temp, String humidity) {
+        jdbcTemplate.update("insert into info values (null ,?,?,?,?);", sunlight, police, temp, humidity);
+    }
 }
